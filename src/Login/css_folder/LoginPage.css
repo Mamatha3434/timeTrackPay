@@ -1,0 +1,226 @@
+:root{
+    --box-background: linear-gradient(45deg,#2865c1,rgb(85, 139, 177));
+    --employee-box-background: linear-gradient(45deg,#2865c1,rgb(85, 139, 177));
+
+    --admin-box-background: linear-gradient(45deg,#637da5,rgb(152, 172, 186));
+
+    --border-background: linear-gradient(135deg,rgb(45, 105, 195),rgba(0, 255, 225, 0.378));
+    /* --border-background: linear-gradient(135deg,rgba(215, 71, 31, 0.742),rgba(255, 0, 43, 0.737)); */
+
+    --button-color: linear-gradient(135deg,rgb(206, 130, 30),rgba(216, 150, 58, 0.874));
+    
+    
+}
+.background{
+    background: url('artistic.png') center/cover no-repeat; 
+opacity: 0.8;
+position: absolute;
+width: 100vw;
+    height: 100vh;
+    z-index:-1;
+}
+
+.background::before{
+    content: '';
+    background: var(--border-background);
+    opacity: 1;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+.body{
+    width:100vw;
+    height:100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+    overflow: hidden;
+    
+    
+
+}
+
+.container{
+    color: white;
+    font-weight: 400;
+    box-shadow: 5px 5px 26.5px white;
+    width: 20%;
+    height: 50%;
+    border: 2px solid white;
+    border-radius: 15px;
+    background: var(--box-background);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+
+}
+
+input.inputSpace {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid white;
+    color: white;
+    width: 139px;
+    height: 27px;
+    z-index:10;
+}
+
+
+input.inputSpace:focus {
+  outline: none;
+  
+}
+
+.who{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.person {
+    font-size: 14px;
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid white;
+    /* box-shadow: 1px 1px 20px 0px white; */
+    font-weight: 400;
+    font-family: serif;
+    white-space: nowrap;
+    overflow: hidden;
+
+}
+
+.personActive {
+    font-size: 14px;
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid white;
+    /* box-shadow: 1px 1px 20px 0px white; */
+    font-weight: 400;
+    font-family: serif;
+    white-space: nowrap;
+    overflow: hidden;
+
+}
+
+.person#employee{
+    border-right:2px solid rgba(157, 198, 213, 0.765);
+}
+
+.person#employee:hover {
+
+    padding: 10px;
+    border-bottom: 2px solid white;
+    font-weight: 500;
+    color: #4384c1;
+    background-color: white;
+    border-radius: 12px 0px 0px 0px
+}
+
+
+.person#admin:hover {
+
+    padding: 10px;
+    border-bottom: 2px solid white;
+    font-weight: 500;
+    color: #4384c1;
+    background-color: white;
+    border-radius: 0px 12px 0px 0px
+}
+
+.personActive#employee {
+
+    padding: 10px;
+    border-bottom: 2px solid white;
+    font-weight: 500;
+    color: #4384c1;
+    background-color: white;
+    border-radius: 12px 0px 0px 0px;
+    white-space: nowrap;
+    
+}
+
+
+.personActive#admin {
+
+    padding: 10px;
+    border-bottom: 2px solid white;
+    font-weight: 500;
+    color: #4384c1;
+    background-color: white;
+    border-radius: 0px 12px 0px 0px
+}
+
+
+.information {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    /* margin-top: 28px; */
+    position: relative;
+    padding: 20px;
+}
+
+
+
+
+.label{
+    position:absolute;
+    font-size: 15px;
+    z-index: 9;
+    opacity: 0.5;
+    
+
+}
+
+
+.label.entering {
+    top: 2px;
+    font-size: 10px;
+    animation: spin 0.5s 1 linear;
+    left: 50px;
+
+    
+}
+
+.buttonSpace {
+    display: inherit;
+    align-items: center;
+    justify-content: center;
+        margin: 20px;
+
+}
+
+.loginButton{
+    background: var(--button-color);
+    width: fit-content;
+    padding:10px;
+    
+}
+.loginButton:hover{
+    
+    border:1px solid white;
+}
+.loginButton:active{
+    
+    transform: scale(1.2);
+}
+
+
+@keyframes spin {
+    from{
+        transform: rotateX(0deg);
+    }
+    to{
+        transform: rotateX(360deg);
+  
+    }
+    
+}
