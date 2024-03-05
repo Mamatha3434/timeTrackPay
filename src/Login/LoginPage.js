@@ -2,10 +2,10 @@ import './css_folder/LoginPage.css'
 import {useEffect, useState} from 'react';
 import { Navigate } from 'react-router-dom';
 import empCredData from '../data_folders/employeeCredentials.json'
-import  adminCredData from '../data_folders/adminCredentials.json'
+// import  adminCredData from '../data_folders/adminCredentials.json'
 
 export default function LoginPage(){
-
+     let adminCredData=[];
     let credentialsObject={
         who:'employee',
         password:'',
@@ -133,7 +133,7 @@ let [employeePersonClass,setemployeePersonClass]=useState('personActive');
 
     }
 
-    let logInAs = () => {
+    let logInAs = async() => {
       
         if(credentials.who=="employee")
         {
@@ -141,7 +141,30 @@ let [employeePersonClass,setemployeePersonClass]=useState('personActive');
         }
         if(credentials.who=="admin")
         {
-            checkCredentialsOfAdmin();
+
+
+            
+
+
+            let adminCredresponse =  await   fetch('http://localhost:8080/ttp-application/getAdminDetails');
+            let adminCredresponseJson= await adminCredresponse.json();
+            adminCredData.push(adminCredresponseJson)
+
+
+                console.log("### result of admin",adminCredresponseJson);
+                console.log("### adminCredData of admin",adminCredData);
+             
+
+                if(adminCredData.find((e)=>{ return e.id==userId && e.password==password}))
+                {
+                    setLogInSuccessAsAdmin(true);
+                }
+
+
+
+
+            
+            // checkCredentialsOfAdmin();
         }
     }
 
@@ -170,7 +193,7 @@ let [employeePersonClass,setemployeePersonClass]=useState('personActive');
 
    if(logInSuccessAsEmployee)
    {
-    return <Navigate to="/employee" />;
+    return <Navigate to="/employee"state={credentials} />;
    }
     return (
         
