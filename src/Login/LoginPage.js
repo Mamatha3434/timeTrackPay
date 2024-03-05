@@ -155,6 +155,7 @@ let [employeePersonClass,setemployeePersonClass]=useState('personActive');
                 console.log("### adminCredData of admin",adminCredData);
              
 
+             
                 if(adminCredData.find((e)=>{ return e.id==userId && e.password==password}))
                 {
                     setLogInSuccessAsAdmin(true);
@@ -163,7 +164,7 @@ let [employeePersonClass,setemployeePersonClass]=useState('personActive');
 
 
 
-            
+            //rechecking the dummy details
             // checkCredentialsOfAdmin();
         }
     }
