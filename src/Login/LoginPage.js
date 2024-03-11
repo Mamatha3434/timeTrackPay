@@ -10,7 +10,6 @@ export default function LoginPage(){
         who:'employee',
         password:'',
         userId:''
-
     }
 
     
