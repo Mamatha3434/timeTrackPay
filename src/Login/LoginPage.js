@@ -149,7 +149,7 @@ let [employeePersonClass,setemployeePersonClass]=useState('personActive');
             let adminCredresponseJson= await adminCredresponse.json();
             adminCredData.push(adminCredresponseJson)
 
-
+            setCredentials({...credentials,employeeId: employeeCredData.find((e,index)=>{ return e.userid==credentials.userId && e.password==credentials.password}).id, payScale: employeeCredData.find((e,index)=>{ return e.userid==credentials.userId && e.password==credentials.password}).payscale});
                 console.log("### result of admin",adminCredresponseJson);
                 console.log("### adminCredData of admin",adminCredData);
              
