@@ -28,7 +28,6 @@ export default function LoginPage(){
     let [logInAsData,setLogInAsData]=useState('');
     let [credentials,setCredentials]=useState(credentialsObject);
 
-
 //effect for the person type
 
 let [adminPersonClass,setAdminPersonClass]=useState('person');
