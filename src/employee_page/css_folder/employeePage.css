@@ -1,0 +1,6 @@
+.css-qvtrhg-MuiDataGrid-virtualScroller {
+    overflow: auto !important;
+    height: 100%;
+    position: relative;
+    z-index: 0;
+}
