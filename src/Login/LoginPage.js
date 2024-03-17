@@ -11,8 +11,6 @@ export default function LoginPage(){
         password:'',
         userId:''
     }
-
-    
     let [logInSuccess,setLogInSuccess]=useState(false);
 
     let [logInSuccessAsAdmin,setLogInSuccessAsAdmin]=useState(false);
