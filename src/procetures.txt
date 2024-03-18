@@ -1,0 +1,19 @@
+
+//for routing
+npm install react-router-dom@latest
+
+
+//for data table
+npm install @mui/x-data-grid   
+npm install @mui/styled-engine-sc styled-components
+
+//for icons
+
+npm install @fortawesome/fontawesome-free
+npm install @material-ui/icons
+npm install @mui/icons-material
+npm install @mui/material @emotion/react @emotion/styled
+
+
+
+npm install recharts
