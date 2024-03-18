@@ -5,11 +5,12 @@ import empCredData from '../data_folders/employeeCredentials.json'
 // import  adminCredData from '../data_folders/adminCredentials.json'
 
 export default function LoginPage(){
-     let adminCredData=[];
     let credentialsObject={
         who:'employee',
         password:'',
-        userId:''
+        userId:'',
+        employeeId:''
+
     }
 
     
@@ -27,6 +28,7 @@ export default function LoginPage(){
     let [password,setPassword]=useState('');
     let [logInAsData,setLogInAsData]=useState('');
     let [credentials,setCredentials]=useState(credentialsObject);
+
 
 //effect for the person type
 
@@ -118,44 +120,71 @@ let [employeePersonClass,setemployeePersonClass]=useState('personActive');
 
     }
 
-    let checkCredentialsOfAdmin=()=>{
-
-        console.log("userid   ",userId," password ",password)
-       
-
-         if(adminCredData.find((e)=>{ return  e.password==password && e.userId==userId }))
-         {
-             setLogInSuccessAsAdmin(true);
-         }
-         
-
-    }
+    
 
     let logInAs = async() => {
       
         if(credentials.who=="employee")
         {
-            checkCredentialsOfEmployee();
+            let employeeCredData=[];
+
+
+            if(employeeCredData.length==0)
+            {
+                let employeeCredresponse =  await   fetch('http://localhost:8081/ttp-application/getEmployeeDetails');
+                let employeeCredresponseJson= await employeeCredresponse.json();
+                employeeCredresponseJson.map((e)=>{
+                    employeeCredData.push(e);
+                })
+            }
+            
+       
+
+                console.log("### employeeCredData of admin",employeeCredData);
+                console.log(credentials.who,'#',credentials.userId,'#',credentials.password);
+
+             
+             if(employeeCredData.length>0)
+                if(employeeCredData.find((e,index)=>{ return e.userid==credentials.userId && e.password==credentials.password}))
+                {
+
+
+                    setCredentials({...credentials,employeeId: employeeCredData.find((e,index)=>{ return e.userid==credentials.userId && e.password==credentials.password}).id, payScale: employeeCredData.find((e,index)=>{ return e.userid==credentials.userId && e.password==credentials.password}).payscale});
+
+                     console.log('Employee login success')
+                    setLogInSuccessAsEmployee(true);
+                }
+
+
+
+
+            
         }
         if(credentials.who=="admin")
         {
 
+            let adminCredData=[];
 
+
+            if(adminCredData.length==0)
+            {
+                let adminCredresponse =  await   fetch('http://localhost:8081/ttp-application/getAdminDetails');
+                let adminCredresponseJson= await adminCredresponse.json();
+                adminCredresponseJson.map((e)=>{
+                    adminCredData.push(e);
+                })
+            }
             
+       
 
-
-            let adminCredresponse =  await   fetch('http://localhost:8080/ttp-application/getAdminDetails');
-            let adminCredresponseJson= await adminCredresponse.json();
-            adminCredData.push(adminCredresponseJson)
-
-            setCredentials({...credentials,employeeId: employeeCredData.find((e,index)=>{ return e.userid==credentials.userId && e.password==credentials.password}).id, payScale: employeeCredData.find((e,index)=>{ return e.userid==credentials.userId && e.password==credentials.password}).payscale});
-                console.log("### result of admin",adminCredresponseJson);
                 console.log("### adminCredData of admin",adminCredData);
-             
+                console.log(credentials.who,'#',credentials.userId,'#',credentials.password);
 
              
-                if(adminCredData.find((e)=>{ return e.id==userId && e.password==password}))
+             if(adminCredData.length>0)
+                if(adminCredData.find((e,index)=>{ console.log(index);return e.userid==credentials.userId && e.password==credentials.password}))
                 {
+                     console.log('admin login success')
                     setLogInSuccessAsAdmin(true);
                 }
 
@@ -192,7 +221,7 @@ let [employeePersonClass,setemployeePersonClass]=useState('personActive');
 
    if(logInSuccessAsEmployee)
    {
-    return <Navigate to="/employee"state={credentials} />;
+    return <Navigate to="/employee"state={{ propData: credentials }} />;
    }
     return (
         
@@ -227,16 +256,13 @@ let [employeePersonClass,setemployeePersonClass]=useState('personActive');
                     </div>
 
                     <div className="information">
-
-
                         <div className={focusAndValueExistClassPassword}>PASSWORD</div>
                         <input onFocus={()=>handleFocus('password')} onBlur={handleBlur} onChange={(e) => handleChange(e.target.value,'password')}  className="inputSpace"></input>
                     </div>
 
                     <div className="buttonSpace">
                         <div 
-                              onClick={()=>{logInAs()}}
-                              className="loginButton">
+onClick={logInAs}                              className="loginButton">
                             LOGIN
                         </div>
                     </div>
