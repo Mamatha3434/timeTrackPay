@@ -127,6 +127,7 @@ export default function EmployeePage() {
             let newRow = {
                 pay_scale:propData.payScale,
                 employee_id: propData.employeeId,
+                current_role_name:propData.currentRole,
                 user_id: propData.userId,
                 actId: empData.length>0?(empNewData[empNewData.length - 1].actId + 1):1,
                 disable_clock_in: false,
@@ -251,7 +252,9 @@ export default function EmployeePage() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payload),
+            credentials: 'include' // Include credentials (cookies)
+
         });
         const dataJson = await response.json();
 
@@ -259,8 +262,8 @@ export default function EmployeePage() {
 
 
         let dbData = dataJson.map((e, index) => { return { ...e,
-            in_time: e.in_time && e.in_time!=null?e.in_time.split('T')[0].substring(0,10)+' '+e.in_time.split('T')[1].substring(0,8):null,
-            out_time: e.out_time && e.out_time!=null?e.out_time.split('T')[0].substring(0,10)+' '+e.out_time.split('T')[1].substring(0,8):null,
+            in_time: e.in_time && e.in_time!=null?e.in_time.split(' ')[0].substring(0,10)+' '+e.in_time.split(' ')[1].substring(0,8):null,
+            out_time: e.out_time && e.out_time!=null?e.out_time.split(' ')[0].substring(0,10)+' '+e.out_time.split(' ')[1].substring(0,8):null,
              actId: index + 1 } });
         setEmployeeDbData(dbData);
 
