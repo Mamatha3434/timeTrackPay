@@ -109,7 +109,7 @@ export default function AdminPage() {
            
         let index = 1;
         const groupedData = responseJson.reduce((groups, entry) => {
-            const { user_id, employee_id, hours_worked,pay_scale } = entry;
+            const { user_id, employee_id, hours_worked,pay_scale,current_role_name } = entry;
             if (!groups[user_id]) {
                 groups[user_id] = { 
                     user_id: user_id, 
@@ -117,11 +117,13 @@ export default function AdminPage() {
                     total_hours_worked: 0,
                      id: index ,
                     earnings:0,
+                    current_role_name:current_role_name
                 };
                 index++;
             }
             groups[user_id].total_hours_worked += hours_worked;
             groups[user_id].earnings += (hours_worked*pay_scale);
+            
 
             return groups;
         }, {});

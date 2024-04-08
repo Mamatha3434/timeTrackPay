@@ -170,7 +170,6 @@ let handleChange = (event) => {
     }
 
 
-
     return (
         //return a div with pie chart from the table
         <div className={admstyles.statsBody}>

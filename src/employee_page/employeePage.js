@@ -52,49 +52,65 @@ export default function EmployeePage() {
 
     }
 
-    const formatDateTime = () => {
-        const now = new Date();
-        return now.toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 19);
-    };
-    
     let inFunction = (params, clockData) => {
         console.log("id in infunction ", params, ' ', clockData);
-    
+
         if (clockData == "clockIn" && !params.disable_clock_in) {
-            let setinTimeData = empData.map(e => {
-                if (e.actId == params.actId && e.disable_clock_out && !e.disable_clock_in) {
+
+            let setinTimeData = empData.map((e) => {
+                if (e.actId == params.actId && e.disable_clock_out == true && e.disable_clock_in == false)
+                {
+                    let formattedDateTime = new Date().toISOString().substring(0,10) + ' ' + new Date().toISOString().substring(11,19);
+
                     return {
                         ...e,
-                        in_time: formatDateTime(),
+                        in_time: formattedDateTime,
+                    
                         clock_in_status: "P",
                         disable_clock_in: true,
                         disable_clock_out: false
-                    };
+
+                    }
                 }
-                return e;
-            });
-    
+                    
+                else
+                    return {
+                        ...e
+                    }
+
+            })
             setEmpData(setinTimeData);
+            //save with time against the s_no
+
             updateEmployeeData(setinTimeData, params.actId);
+
+
         }
-    
         if (clockData == "clockOut" && !params.disable_clock_out) {
-            let setOutTime = empData.map(e => {
-                if (e.actId == params.actId && !e.disable_clock_out && e.disable_clock_in) {
+            let setOutTime = empData.map((e) => {
+                if (e.actId == params.actId && e.disable_clock_out == false && e.disable_clock_in == true) {
+                    let formattedDateTime = new Date().toISOString().substring(0,10) + ' ' + new Date().toISOString().substring(11,19);
                     return {
                         ...e,
-                        out_time: formatDateTime(),
+                        out_time: formattedDateTime,
                         clock_out_status: "P",
                         disable_clock_out: true
-                    };
+                    }
                 }
-                return e;
-            });
-    
+
+                else
+                    return {
+                        ...e
+                    }
+
+            })
+            // setEmpData(setOutTime);
             updateEmployeeData_after_calculating_hours(setOutTime, params.actId);
+
+
         }
-    };
-    
+
+    }
     let addNewEmpRow = () => {
         let empNewData = [...empData];
         // to check if the last row has the status of clockout P
