@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import empCredData from '../data_folders/employeeCredentials.json'
 // import  adminCredData from '../data_folders/adminCredentials.json'
-import axios from 'axios';
+
+
 export default function LoginPage() {
     let credentialsObject = {
         who: 'employee',
@@ -146,7 +147,7 @@ export default function LoginPage() {
 
     const logInAndFetchCookie = async () => {
         console.log(credentials.who, '#', credentials.userId, '#', credentials.password);
-    
+
         try {
             const response = await fetch('http://localhost:8081/ttp-application/login', {
                 method: 'POST',
@@ -156,22 +157,22 @@ export default function LoginPage() {
                 body: JSON.stringify(credentials),
                 credentials: 'include' // Include credentials (cookies)
             });
-    
+
             // Assuming responseJson contains the login status
             const responseJson = await response.json();
             console.log('Received cookies:', document.cookie);
-    
+
             // Set login success based on user type
             if (credentials.who === 'employee' && responseJson.status === 'SUCCESS') {
                 console.log('employeeId:', responseJson.employeeId + ', payScale:', responseJson.payscale);
 
-                setCredentials({ ...credentials, employeeId: responseJson.employeeId, payScale: responseJson.payscale, currentRole:responseJson.currentRole });
+                setCredentials({ ...credentials, employeeId: responseJson.employeeId, payScale: responseJson.payscale, currentRole: responseJson.currentRole });
                 setLogInSuccessAsEmployee(true);
             } else if (credentials.who === 'admin' && responseJson.status === 'SUCCESS') {
                 // setDetails();
                 setLogInSuccessAsAdmin(true);
             }
-    
+
             console.log('Login successful');
         } catch (error) {
             // Handle fetch error
@@ -223,7 +224,7 @@ export default function LoginPage() {
 
 
     //         if (adminCredData.length == 0) {
-    //             let adminCredresponse = await fetch('http://localhost:8081/ttp-application/getAdminDetails');
+    //             let adminCredresponse = await fetch('http://localhost:8081/ttp-application/getStandardPayrolls');
     //             let adminCredresponseJson = await adminCredresponse.json();
     //             adminCredresponseJson.map((e) => {
     //                 adminCredData.push(e);
