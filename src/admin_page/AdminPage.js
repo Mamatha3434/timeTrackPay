@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import admstyles from './css-folder/AdminPage.module.css'
 import OfPerson from './OfAPerson';
 import EditDetailsOfPerson from './EditDetailsOfPerson';
+import LeavesApproval from './LeavesApproval';
 export default function AdminPage() {
 
     let [empData, setEmpData] = useState([]);
@@ -22,6 +23,7 @@ export default function AdminPage() {
     let [showAdminPage, setShowAdminPage] = useState(true);
     let [showPersonPage, setShowPersonPage] = useState(false);
     let [showEditScreen, setShowEditScreen] = useState(false);
+    let [showLeavesApprovalPage, setLeavesApprovalPage] = useState(false);
 
     // let [earnings]
     let columnHeaders = [
@@ -34,7 +36,7 @@ export default function AdminPage() {
 
         { field: 'earnings', headerName: 'earnings', flex: 1, align: 'center', headerAlign: 'center' },
         {
-            field: "action", headerName: "Action", sortable: false, width: 225, fontSize: 12, fontWeight: 'bold',
+            field: "action", headerName: "Action", sortable: false, width: 150, fontSize: 12, fontWeight: 'bold',
             renderCell: (params) => {
               return (
                 <div className={admstyles.viewButton}>
@@ -45,7 +47,7 @@ export default function AdminPage() {
             }
           },
           {
-            field: "Edit", headerName: "EDIT PAYROLL", sortable: false, width: 225, fontSize: 12, fontWeight: 'bold',
+            field: "Edit", headerName: "EDIT PAYROLL", sortable: false, width: 150, fontSize: 12, fontWeight: 'bold',
             renderCell: (params) => {
               return (
                 <div className={admstyles.viewButton}>
@@ -55,6 +57,17 @@ export default function AdminPage() {
               )
             }
           },
+          {
+            field: "LEAVES", headerName: "LEAVES", sortable: false, width: 150, fontSize: 12, fontWeight: 'bold',
+            renderCell: (params) => {
+              return (
+                <div className={admstyles.viewButton}>
+                  <a  onClick={() => { LeavesApprovalScreenFunction(params.row) }}> LEAVES </a>
+                 
+                </div>
+              )
+            }
+          }
 
 
     ]
@@ -77,6 +90,7 @@ export default function AdminPage() {
         setShowPersonPage(false);
         setShowEditScreen(false);
         setShowAdminPage(true);
+        setLeavesApprovalPage(false);
     }
 
      let personStatsFunction=(params)=>{
@@ -97,6 +111,16 @@ export default function AdminPage() {
         setShowEditScreen(true);
         setShowAdminPage(false);
      }
+
+     let LeavesApprovalScreenFunction=(params)=>{
+
+      console.log("##params",params);
+
+      setEditRowData(params);
+      setShowEditScreen(false);
+      setShowAdminPage(false);
+      setLeavesApprovalPage(true);
+   }
 
     let fetchAttendanceDetails = async () => {
         //http://localhost:8081/ttp-application/getEmployeeAttendanceDetails
@@ -184,6 +208,12 @@ export default function AdminPage() {
                 </div>
            }
             
+            {
+            showLeavesApprovalPage &&
+            <div>
+              <LeavesApproval data={editRowData} close={backtoAdminpage} > </LeavesApproval>
+                </div>
+            }
 
         </div>
     )
