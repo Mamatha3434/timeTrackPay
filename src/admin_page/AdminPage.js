@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import admstyles from './css-folder/AdminPage.module.css'
 import OfPerson from './OfAPerson';
 import EditDetailsOfPerson from './EditDetailsOfPerson';
+import LeavesApproval from './LeavesApproval';
 export default function AdminPage() {
 
     let [empData, setEmpData] = useState([]);
@@ -22,6 +23,7 @@ export default function AdminPage() {
     let [showAdminPage, setShowAdminPage] = useState(true);
     let [showPersonPage, setShowPersonPage] = useState(false);
     let [showEditScreen, setShowEditScreen] = useState(false);
+    let [showLeavesApprovalPage, setLeavesApprovalPage] = useState(false);
 
     // let [earnings]
     let columnHeaders = [
@@ -34,7 +36,7 @@ export default function AdminPage() {
 
         { field: 'earnings', headerName: 'earnings', flex: 1, align: 'center', headerAlign: 'center' },
         {
-            field: "action", headerName: "Action", sortable: false, width: 225, fontSize: 12, fontWeight: 'bold',
+            field: "action", headerName: "Action", sortable: false, width: 150, fontSize: 12, fontWeight: 'bold',
             renderCell: (params) => {
               return (
                 <div className={admstyles.viewButton}>
@@ -45,7 +47,7 @@ export default function AdminPage() {
             }
           },
           {
-            field: "Edit", headerName: "EDIT PAYROLL", sortable: false, width: 225, fontSize: 12, fontWeight: 'bold',
+            field: "Edit", headerName: "EDIT PAYROLL", sortable: false, width: 150, fontSize: 12, fontWeight: 'bold',
             renderCell: (params) => {
               return (
                 <div className={admstyles.viewButton}>
@@ -55,6 +57,17 @@ export default function AdminPage() {
               )
             }
           },
+          {
+            field: "LEAVES", headerName: "LEAVES", sortable: false, width: 150, fontSize: 12, fontWeight: 'bold',
+            renderCell: (params) => {
+              return (
+                <div className={admstyles.viewButton}>
+                  <a  onClick={() => { LeavesApprovalScreenFunction(params.row) }}> LEAVES </a>
+                 
+                </div>
+              )
+            }
+          }
 
 
     ]
@@ -77,6 +90,7 @@ export default function AdminPage() {
         setShowPersonPage(false);
         setShowEditScreen(false);
         setShowAdminPage(true);
+        setLeavesApprovalPage(false);
     }
 
      let personStatsFunction=(params)=>{
@@ -98,6 +112,16 @@ export default function AdminPage() {
         setShowAdminPage(false);
      }
 
+     let LeavesApprovalScreenFunction=(params)=>{
+
+      console.log("##params",params);
+
+      setEditRowData(params);
+      setShowEditScreen(false);
+      setShowAdminPage(false);
+      setLeavesApprovalPage(true);
+   }
+
     let fetchAttendanceDetails = async () => {
         //http://localhost:8081/ttp-application/getEmployeeAttendanceDetails
         let response = await fetch('http://localhost:8081/ttp-application/getEmployeeAttendanceDetails');
@@ -109,7 +133,7 @@ export default function AdminPage() {
            
         let index = 1;
         const groupedData = responseJson.reduce((groups, entry) => {
-            const { user_id, employee_id, hours_worked,pay_scale } = entry;
+            const { user_id, employee_id, hours_worked,pay_scale,current_role_name } = entry;
             if (!groups[user_id]) {
                 groups[user_id] = { 
                     user_id: user_id, 
@@ -117,11 +141,13 @@ export default function AdminPage() {
                     total_hours_worked: 0,
                      id: index ,
                     earnings:0,
+                    current_role_name:current_role_name
                 };
                 index++;
             }
             groups[user_id].total_hours_worked += hours_worked;
             groups[user_id].earnings += (hours_worked*pay_scale);
+            
 
             return groups;
         }, {});
@@ -182,6 +208,12 @@ export default function AdminPage() {
                 </div>
            }
             
+            {
+            showLeavesApprovalPage &&
+            <div>
+              <LeavesApproval data={editRowData} close={backtoAdminpage} > </LeavesApproval>
+                </div>
+            }
 
         </div>
     )
