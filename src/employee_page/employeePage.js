@@ -11,12 +11,18 @@ import './css_folder/employeePage.css';
 import AddIcon from '@mui/icons-material/Add';
 import { Save } from '@mui/icons-material';
 import OfEmployee from './ofEmployee';
+import LeavesPage from './leavesPage';
+import LeavesHistory from './leavesHistory';
 
 
 export default function EmployeePage() {
 
     let [viewAttendanceScreen,setViewAttendanceScreen]=useState(true);
     let [viewPayStatsScreen,setViewPayStatsScreen]=useState(false);
+    let [viewLeavesScreen,setViewLeavesScreen]=useState(false);
+    let [viewLeavesHistoryScreen,setViewLeavesHistoryScreen]=useState(false);
+
+
 
     const location = useLocation();
     const propData = location.state?.propData;
@@ -111,13 +117,60 @@ export default function EmployeePage() {
         }
 
     }
-    let addNewEmpRow = () => {
+    let addNewEmpRow = async () => {
         let empNewData = [...empData];
         // to check if the last row has the status of clockout P
 
         // console.log("this exists before",empNewData);
 
         // console.log("#12", empNewData[empNewData.length - 1].disable_clock_out);
+
+        // http://localhost:8081/ttp-application/leaves/history?employeeId=123
+
+        const resp=await fetch('http://localhost:8081/ttp-application/leaves/history?employeeId='+propData.employeeId);
+        const responseJson=await resp.json();
+        console.log("##responseJson history##",responseJson);
+
+
+        const approvedLeaves = responseJson.filter(item => item.status === "Approved");
+
+        // Initialize an empty set to store the dates
+        const dateSet = new Set();
+        
+        // Iterate over each object in the filtered array
+        approvedLeaves.forEach(item => {
+            // Extract start and end dates
+            const startDate = new Date(item.start_date);
+            const endDate = new Date(item.end_date);
+        
+            // Generate dates between start and end dates (inclusive)
+            for (let currentDate = startDate; currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
+                // Add formatted date to the set
+                dateSet.add(currentDate.toISOString().slice(0, 10));
+            }
+        });
+
+        console.log("##dateSet##", dateSet);
+        
+        // Check if today's date is present in the set
+        const today = new Date().toISOString().slice(0, 10);
+        const isTodayInApprovedLeaves = dateSet.has(today);
+
+        if(dateSet.has(today))
+        {
+            alert("Today is in approved leaves. You cannot clock in today")
+            return;
+        }
+        
+        console.log("Is today in approved leaves:", isTodayInApprovedLeaves);
+
+
+
+        let lastRow = empNewData[empNewData.length - 1];
+        console.log("##lastRow##", lastRow);
+
+
+
         if (empData.length>0 && !(empNewData[empNewData.length - 1].disable_clock_in == true &&  empNewData[empNewData.length - 1].disable_clock_out == true)) {
             alert("Clock out the last row before adding a new row")
             return;
@@ -155,8 +208,32 @@ export default function EmployeePage() {
 
      setViewAttendanceScreen(false);
      setViewPayStatsScreen(true);
+     setViewLeavesScreen(false);
+     setViewLeavesHistoryScreen(false);
+
+
 
     }
+
+    let viewLeaveStats=()=>{
+
+
+        setViewLeavesScreen(true);
+        setViewAttendanceScreen(false);
+        setViewPayStatsScreen(false);
+        setViewLeavesHistoryScreen(false);
+
+   
+       }
+       let viewLeaveHistoryStats=()=>{
+
+setViewLeavesHistoryScreen(true);
+        setViewLeavesScreen(false);
+        setViewAttendanceScreen(false);
+        setViewPayStatsScreen(false);
+
+   
+       }
 
 
     
@@ -281,9 +358,12 @@ export default function EmployeePage() {
 
         }
     }, [propData])
+
     let backtoEmployeepage=()=>{
         setViewAttendanceScreen(true);
         setViewPayStatsScreen(false);
+        setViewLeavesScreen(false);
+        setViewLeavesHistoryScreen(false);
     }
 
     return (
@@ -300,6 +380,17 @@ export default function EmployeePage() {
 
                 <div className={empStyles.viewIcon} onClick={viewPayStats}>
                     <span className={empStyles.spanText}>VIEW PAY</span>
+
+                </div>
+
+                <div className={empStyles.leaveIcon} onClick={viewLeaveStats}>
+                    <span className={empStyles.spanText}>ADD LEAVES</span>
+
+                </div>
+
+
+                <div className={empStyles.leaveHistoryIcon } onClick={viewLeaveHistoryStats}>
+                    <span className={empStyles.spanText}>view history</span>
 
                 </div>
 
@@ -322,6 +413,20 @@ export default function EmployeePage() {
                viewPayStatsScreen &&
                
                <OfEmployee close={backtoEmployeepage} propData={propData} ></OfEmployee>
+            }
+
+
+{
+               viewLeavesScreen &&
+               
+               <LeavesPage close={backtoEmployeepage} propData={propData} ></LeavesPage>
+            }
+
+
+{
+               viewLeavesHistoryScreen &&
+               
+               <LeavesHistory close={backtoEmployeepage} propData={propData} ></LeavesHistory>
             }
 
             
