@@ -16,4 +16,6 @@ npm install @mui/material @emotion/react @emotion/styled
 
 
 
-npm install recharts
+npm install recharts      // to read the charts
+
+npm install axios       //to read the cookies
