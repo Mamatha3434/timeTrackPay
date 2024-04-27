@@ -16,26 +16,24 @@ const EditDetailsOfPerson = (params) => {
         userId: '',
         payscale: '',
         newpayscale: '',
-        currentRoleName: ''
+        currentRoleName:''
     })
 
 
     let [maxPayscale, setMaxPayscale] = useState(0);
 
-    let fetchStadardPayrolls = async (current_role_name) => {
+      let fetchStadardPayrolls = async (current_role_name) => {
 
         let standardPayRollResponse = await fetch('http://localhost:8081/ttp-application/standardPayRolls');
         let standardPayRollResponseJson = await standardPayRollResponse.json();
         console.log('standardPayRollResponseJson', standardPayRollResponseJson);
-        if (standardPayRollResponseJson) {
-            let maxPayscale = standardPayRollResponseJson.filter((e) => { return e.role_name == current_role_name })[0].standard_pay_scale;
 
-            setMaxPayscale(maxPayscale);
+        let maxPayscale = standardPayRollResponseJson.filter((e) => { return e.role_name == current_role_name })[0].standard_pay_scale;
 
+        setMaxPayscale(maxPayscale);
+          
 
-        }
-
-    }
+      }
 
     useEffect(() => {
         console.log('data', data);
@@ -49,7 +47,7 @@ const EditDetailsOfPerson = (params) => {
             let newObj = { ...prev };
             newObj.employeeId = data.employee_id;
             newObj.userId = data.user_id;
-            newObj.currentRoleName = data.current_role_name;
+            newObj.currentRoleName=data.current_role_name;
             return newObj;
         })
 
@@ -85,44 +83,46 @@ const EditDetailsOfPerson = (params) => {
 
 
 
-    let saveEmployeeDetails = async () => {
+     let saveEmployeeDetails =async()=>{
         let payload = {
             newpayscale: empObj.newpayscale,
             employeeId: empObj.employeeId
         }
 
-        if (empObj.newpayscale > maxPayscale) {
-            console.log('Payroll cannot be greater than maximum payroll');
-            setTimeout(() => {
+        if(empObj.newpayscale>maxPayscale)
+            {
+                console.log('Payroll cannot be greater than maximum payroll');
+                setTimeout(() => {
 
-                setShowAlert(false);
+                    setShowAlert(false);
+                    
+                }, 1000);
 
-            }, 1000);
+                setShowAlert(true);
 
-            setShowAlert(true);
+                // return;
 
-            // return;
+            }
+            else
+            {
+                const response = await fetch('http://localhost:8081/ttp-application/updatePersonPayRoll', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+        
+                console.log(response);
+                close();
+            }
 
-        }
-        else {
-            const response = await fetch('http://localhost:8081/ttp-application/updatePersonPayRoll', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
+       
 
-            console.log(response);
-            close();
-        }
-
-
-
-
+       
         // close();
 
-    }
+     }
 
     return (
         <div>
@@ -130,12 +130,12 @@ const EditDetailsOfPerson = (params) => {
                 <button onClick={close}>Back</button>
             </div>
             <div style={admstyles.alertBox}>
-                {
-                    showalert && <Alert severity="error">Payroll cannot be greater than maximum payroll</Alert>
-                }
+            {
+                showalert && <Alert severity="error">Payroll cannot be greater than maximum payroll</Alert>
+            }
             </div>
 
-
+            
 
 
             <div className={admstyles.box_container}>
@@ -180,7 +180,7 @@ const EditDetailsOfPerson = (params) => {
                 <button onClick={saveEmployeeDetails}>save</button>
             </div>
 
-
+            
 
         </div>
     )

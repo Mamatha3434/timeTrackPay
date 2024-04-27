@@ -4,3 +4,8 @@
     position: relative;
     z-index: 0;
 }
+
+.css-az8st9-MuiDataGrid-root.MuiDataGrid-autoHeight {
+    height: auto;
+    width: 40vw;
+}

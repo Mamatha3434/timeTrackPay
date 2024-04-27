@@ -19,3 +19,7 @@ npm install @mui/material @emotion/react @emotion/styled
 npm install recharts      // to read the charts
 
 npm install axios       //to read the cookies
+
+npm install dayjs
+
+npm install @mui/x-date-pickers
