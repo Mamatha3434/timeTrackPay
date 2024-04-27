@@ -3,7 +3,11 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import empCredData from '../data_folders/employeeCredentials.json'
 // import  adminCredData from '../data_folders/adminCredentials.json'
+<<<<<<< HEAD
 //import axios from 'axios';//
+=======
+import axios from 'axios';
+>>>>>>> 1de7848decaba733cdb98867c88a479cc3624f36
 export default function LoginPage() {
     let credentialsObject = {
         who: 'employee',
@@ -223,7 +227,11 @@ export default function LoginPage() {
 
 
     //         if (adminCredData.length == 0) {
+<<<<<<< HEAD
     //             let adminCredresponse = await fetch('http://localhost:8081/ttp-application/getAdminDetails');
+=======
+    //             let adminCredresponse = await fetch('http://localhost:8081/ttp-application/getStandardPayrolls');
+>>>>>>> 1de7848decaba733cdb98867c88a479cc3624f36
     //             let adminCredresponseJson = await adminCredresponse.json();
     //             adminCredresponseJson.map((e) => {
     //                 adminCredData.push(e);
@@ -309,7 +317,11 @@ export default function LoginPage() {
 
                 <div className="information">
                     <div className={focusAndValueExistClassPassword}>PASSWORD</div>
+<<<<<<< HEAD
                     <input onFocus={() => handleFocus('password')} onBlur={handleBlur} onChange={(e) => handleChange(e.target.value, 'password')} className="inputSpace"></input>
+=======
+                    <input type='password' onFocus={() => handleFocus('password')} onBlur={handleBlur} onChange={(e) => handleChange(e.target.value, 'password')} className="inputSpace"></input>
+>>>>>>> 1de7848decaba733cdb98867c88a479cc3624f36
                 </div>
 
                 {/* <div className="buttonSpace">

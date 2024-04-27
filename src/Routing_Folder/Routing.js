@@ -9,30 +9,17 @@ import {
 import LoginPage from "../Login/LoginPage";
 import AdminPage from "../admin_page/AdminPage";
 import EmployeePage from "../employee_page/employeePage";
+import { Navigate } from "react-router-dom";
 export default function Routing(){
     return (
         <div>
                 <Router>
                 <div className="App">
-                    {/* <ul className="App-header">
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/admin">
-                                admin
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/user">
-                                user
-                            </Link>
-                        </li>
-                    </ul> */}
                     <Routes>
+                    <Route path="/" element={<Navigate to="/login" />} />
                         <Route
                             exact
-                            path="/"
+                            path="/login"
                             element={<LoginPage />}
                         ></Route>
                         <Route
