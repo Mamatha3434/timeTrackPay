@@ -47,7 +47,7 @@ export default function AdminPage() {
             }
           },
           {
-            field: "Edit", headerName: "EDIT PAYROLL", sortable: false, width: 150, fontSize: 12, fontWeight: 'bold',
+            field: "Edit", headerName: "EDIT PAY", sortable: false, width: 150, fontSize: 12, fontWeight: 'bold',
             renderCell: (params) => {
               return (
                 <div className={admstyles.viewButton}>
